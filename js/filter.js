@@ -43,158 +43,113 @@ var data = {
 
 
 
-/**
- * @return {object with public API}
- */
 
-var filter = function(obj){
-	var stepsWrap = $(".filter__steps__inner");
-	var content = $(".filter__content");
-	var tileWrap = $(".filter__tile-wrap");
-	var tile = $(".filter__tile");
+var filter = function() {
 
 	var result = {};
-	var defaults = {
-		count: 1,
-	}
-	return {
 
-		createNav: function(count, obj){
-			var i = 1;
-			for(var key in obj) {
-				stepsWrap.append(
-					'<div class="filter__step" data-id="'+key+'">'+
-						'<span class="icon default-bg '+(i===1? "active" : "")+'">'+
-							'<i>'+i+'</i>'+
-						'</span>'+
-					'</div>');
-				i++;
+	$(document).ready(function() {
+
+		var owl = $(".filter__dinamic");
+
+		owl.on('initialized.owl.carousel', function(property){
+			for(var i=0; i<property.item.count+1; i++) {
+				$(".owl-dot span").eq(i).html(i+"");
 			}
-		},
-
-		createTile: function(){
-			var i = 0;
-			for (var key in obj) {
-				content.append(
-					'<div class="filter__inner-wrap '+(i===0? "active" : "")+'" data-target="'+key+'">'+
-						'<div class="filter__title">'+
-							'<h2>'+obj[key].title+'</h2>'+
-						'</div>'+
-						'<div class="filter__tile-wrap">'+
-							'<div class="filter__tile">'+
-								''+this.filterItems(key, obj[key].items)+''+
-							'</div>'+
-						'</div>'+
-					'</div>');
-				i++;
-			}
-			
-		},
-
-		renderContent: function(data) {
-			$(".filter__inner-wrap, .filter__step span").removeClass('active');
-			$(".filter__inner-wrap[data-target="+data+"]").addClass('active');
-			$(".filter__step[data-id="+data+"] span").addClass('active');
-			$(".filter__inner__model[data-model="+data+"]").addClass('active');
-			
-		},
-
-		filterItems: function(key,arr) {
-			var str = "";
-			for(var i = 0; i < arr.length; i++) {
-				/*console.log(typeof(arr[i]));*/
-				if( typeof(arr[i]) === "string" ) {
-					str += '<button parent="" id-target="'+key+'">'+arr[i]+'</button>';
-				}
-				if ( typeof(arr[i]) === "object" ){
-					for(var key in arr[i]) {
-						for(var key2 in arr[i][key]) {
-							console.log(arr[i][key]);
-							str += '<button parent="'+key+'" id-target="'+arr[i][key][key2]+'">'+arr[i][key][key2]+'</button>'
-						}
-					}
-				}
-			}
-
-			return str;
-		},
-
-
-		nextStep: function() {
-			var that = this;
-			$(document).on('click', '.filter__tile button', function(event) {
-				$(".filter__tile button").removeClass('active');
+			current = property.item.index;
+			$(document).on('click', '.filter__tile .button', function(event) {
+	    		$(this).parent().parent().find(".button").removeClass('active');
 				$(this).addClass('active');
-				var arr = [], i=0, state = "";
-				var current = $(this).attr("id-target");
-				var currentParent = $(this).attr("parent");
-				var next = "";
+				var key = $(this).attr("data-key");
+				owl.trigger('next.owl.carousel');
+				var val = $(this).find("h3").html();
+		    	result[key] = val;
+		    	renderBrad(result);
+		    	console.log(result)
+	    	});
+		});
 
-				if( currentParent !== "" ) {
-					result["model"] = $(this).html();
-				} 
-				if( currentParent === "" ){
-					result[current] = $(this).html();
-				}
-				
+		owl.owlCarousel({
+		    items:1,
+		    smartSpeed:450,
+		    loop: false,
+		    mouseDrag: false,
+		    touchDrag: false,
+		  	freeDrag: false,  
+		  	pullDrag: false,
+		  	callbacks: true,
+		  	dotsEach: 1,
+		  	autoHeight: true,
 
-				for (var key in obj) {
-					/*console.log(key);*/
-					arr[i] = key;
-					i++;
-				}
-				for(var j=0; j<arr.length; j++) {
-					if( arr[j] == current) {
-						if( j > -1 ) {
-							$(".filter__content .getBack").addClass('active');
-							console.log(current)
-						}
-						if( j === 2 ) {
-							$(".filter__link, .filter__content .getNext").addClass('active');
-						}
-						next = (arr[j+1]);
-						console.log(next);
-						that.renderContent(next);
-					}
-				}
-				event.preventDefault();
+		})
 
-				console.log(i);
-				console.log(that.get.result());
-			});
-		},
-		get: {
-			length: function() {
-				var size = 0;
-				for (var key in obj) {
-					if (obj.hasOwnProperty(key)) size++;
-				}
-				return size;
-			},
-			currentStep: function() {
-				return current;
-			},
-			result: function() {
-				return result;
+		$(".getNext").click(function(event) {
+			event.preventDefault();
+			owl.trigger('next.owl.carousel');
+		});
+		$(".getBack").click(function(event) {
+			event.preventDefault();
+			owl.trigger('prev.owl.carousel');
+		});
 
+
+		owl.on('changed.owl.carousel',function(property){
+		    current = property.item.index;
+		    /*console.log(current);*/
+		    var src = $(property.target).find(".owl-item").eq(current).find(".filter__inner-wrap");
+		    if(current>1){
+		    	$(".filter__link a").removeClass('btn-gray');
+		    	$(".filter__link a,.filter__content .getBack, .filter__content .getNext").addClass('btn-success');
+		    	$(".filter__content .getBack, .filter__content .getNext").removeClass('btn-gray');
+		    	$(".filter__tile .button").unbind('click');
+		    	$(document).on('click', '.filter__tile .button', function(event) {
+		    		$(this).parent().parent().find(".button").removeClass('active');
+					$(this).addClass('active');
+					var key = $(this).attr("data-key");
+					var val = $(this).find("h3").html();
+			    	result[key] = val;
+			    	renderBrad(result);
+			    	console.log(result);
+		    	});
+		    } else {
+		    	$(".filter__link a, .filter__content .getBack, .filter__content .getNext").removeClass('btn-success');
+		    	$(".filter__link a").addClass('btn-gray');
+		    }
+		    
+		});
+
+		function renderBrad(obj){
+			html = "";
+			size = 0;
+			for(var key in obj) {
+				html += '<a href="#" data-key="'+key+'" class="btn btn-animated btn-lg btn-danger"><span>'+obj[key]+'</span><i class="fa fa-times"></i></a>'
+				size++;
 			}
-		},
+			$(".filter__bread").html(html);
+		}
 
-
-
-		init: function() {
-			if(obj === undefined) {
-				this.createNav(defaults.count);
-			} else {
-				this.createNav(this.get.length(), obj);
-				this.createTile();
-				this.nextStep();
-			}
+		$(document).on('click', '.filter__bread a', function(event) {
+			event.preventDefault();
+			var inner = $(this).attr("data-key");
+			$(".button[data-key]")
+			delete result[inner];
+			owl.trigger('prev.owl.carousel');
+			console.log(result);
+			$(this).remove();
+		});
 			
-		},
+		
+		
+	});
+
+	return {
+		result: function() {
+			console.log("Вот он здоровенный резалт моей мечты " +result);
+			console.log(result)
+			return result;	
+		}
 	}
-};
 
+}();
 
-var fil = filter(data);
-fil.init();
+var fil = filter;

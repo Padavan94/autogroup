@@ -1,39 +1,46 @@
 .filter{
 	padding: 30px 0px;
+	background-color: #fafafa;
 }
 	.filter__inner{
-		border: 1px solid #000;
+		border: 1px solid #09afdf;
 		padding: 10px;
+	}
+	.filter__bread{
+		margin-bottom: 30px;
+	}
+	.filter__bread a:not(:last-child){
+		margin-right: 10px;
+		pointer-events: none;
+		opacity: .7; 
 	}
 	.filter__tile{
 		display: flex;
 		justify-content: center;
 		flex-wrap: wrap;
 	}
-		.filter__tile button{
-			border: none;
-			padding: 7px 16px;
-			border-radius: 5px;
-			color: #fff;
-			background-color: orange;
-			border: 1px solid #000;
-			margin: 10px 1%;
-			width: 10%;
+		.getNext.btn-success,
+		.getBack.btn-success{
+			display: block !important;	
 		}
-		.filter__tile button.active{
-			background-color: red;
+		.filter__tile .button {
+			cursor: pointer;
 		}
-	.filter__inner-wrap{
-		display: none;
-	}
-		.filter__inner-wrap.active{
-			display: block;
+		.filter__tile .button.active .feature-box{
+			border: 3px solid #09afdf;
 		}
+		/* .filter__tile .button:hover .feature-box{
+			background-color: #f66f6f;
+		} */
+			
 	.filter__inner__model.active{
 		display: block;
 	}
 	.filter__tile-wrap{
 		padding-bottom: 30px;
+	}
+	.filter__dinamic{
+		padding-top: 103px;
 	}
 	.filter__steps__inner{
 		display: flex;
@@ -67,6 +74,41 @@
 			margin-bottom: 0;
 			margin-top: 0;
 		}
+		.filter__body .owl-dots{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 100%;
+		}
+		.filter__body .owl-dot{
+			display: inline-block;
+			/* pointer-events: none; */
+		}
+			.filter__body .owl-dot.active{
+				pointer-events: auto;
+			}
+			.filter__body .owl-dot.active span{
+				background-color: #0897c0;
+			}
+		.owl-controls{
+			width: 100%;
+			text-align: center;
+		}
+		.filter__body .owl-dot span{
+			width: 20px;
+			height: 20px;
+			background: #09afdf;
+			display: inline-block;
+			border-radius: 50%;
+			margin: 0px 10px;
+			width: 50px;
+			height: 50px;
+			color: #fff;
+			font-weight: bold;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	.filter__content{
 		padding: 0px 50px;
 	}
@@ -99,20 +141,12 @@
 		text-align: right;
 	}
 	.filter__link a{
-		display: inline-block;
-		padding: 5px 12px;
-		border-radius: 5px;
-		background-color: #eaeaea;
-		color: #ababab;
 		pointer-events: none;
 	}
-		.filter__link.active a{
+		.filter__link a.btn-success{
 			pointer-events: auto;
-			background-color: green;
-			color: #fff;
-			border: 1px solid #000;
 		}
-		.filter__link a:hover{
+		/* .filter__link a:hover{
 			text-decoration: none;
 			background-color: #0c630c;
-		}
+		} */
