@@ -40,7 +40,7 @@
 		padding-bottom: 30px;
 	}
 	.filter__dinamic{
-		padding-top: 103px;
+		padding-top: 140px;
 	}
 	.filter__steps__inner{
 		display: flex;
@@ -79,7 +79,20 @@
 			left: 0;
 			top: 0;
 			width: 100%;
+			justify-content: space-around;
+			display: flex;
 		}
+			.filter__body .owl-dots:before,
+			.filter__body .owl-dots:after{
+				content: "";
+				height: 1px;
+				width: 100%;
+				position: absolute;
+				background-color: #09afdf;
+				top: 50%;
+				left: 0;
+				z-index: -1;
+			}
 		.filter__body .owl-dot{
 			display: inline-block;
 			/* pointer-events: none; */
@@ -98,15 +111,13 @@
 			width: 20px;
 			height: 20px;
 			background: #09afdf;
-			display: inline-block;
 			border-radius: 50%;
-			margin: 0px 10px;
-			width: 50px;
-			height: 50px;
+			width: 80px;
+			height: 80px;
 			color: #fff;
 			font-weight: bold;
 			display: flex;
-			justify-content: center;
+			justify-content: space-around;
 			align-items: center;
 		}
 	.filter__content{

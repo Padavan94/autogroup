@@ -90,6 +90,12 @@ var filter = function() {
 		$(".getBack").click(function(event) {
 			event.preventDefault();
 			owl.trigger('prev.owl.carousel');
+			var cur = $(".filter__bread a:last-child");
+			var inner = cur.attr("data-key");
+			delete result[inner];
+			cur.remove();
+			console.log(result);
+			
 		});
 
 
@@ -131,7 +137,6 @@ var filter = function() {
 		$(document).on('click', '.filter__bread a', function(event) {
 			event.preventDefault();
 			var inner = $(this).attr("data-key");
-			$(".button[data-key]")
 			delete result[inner];
 			owl.trigger('prev.owl.carousel');
 			console.log(result);
